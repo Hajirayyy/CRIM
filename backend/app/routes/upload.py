@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 import pandas as pd
 import io
-from ml.predict import predict_churn
+from app.ml.predict import predict_churn
 
 router = APIRouter()
 

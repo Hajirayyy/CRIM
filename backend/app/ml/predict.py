@@ -1,6 +1,6 @@
 import pandas as pd
-from ml.model import model
-from ml.preprocess import preprocess
+from app.ml.model import model
+from app.ml.preprocess import preprocess
 
 def get_risk_level(probability: float) -> str:
     # Declaring thresholds

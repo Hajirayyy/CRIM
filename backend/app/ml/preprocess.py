@@ -2,7 +2,7 @@ import pandas as pd
 import pickle
 import os
 
-FEATURE_COLUMNS_PATH = os.path.join(os.path.dirname(__file__), '..', 'models', 'feature_columns.pkl')
+FEATURE_COLUMNS_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'models', 'feature_columns.pkl')
 
 with open(FEATURE_COLUMNS_PATH, 'rb') as f:
     FEATURE_COLUMNS = pickle.load(f)
