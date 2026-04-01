@@ -18,7 +18,7 @@ def preprocess(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop(columns=['Churn'], errors='ignore')
 
     # One hot encode all text columns
-    categorical_cols = df.select_dtypes(include='str').columns.tolist()
+    categorical_cols = df.select_dtypes(include='object').columns.tolist()
     df = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
 
     # Align the dataframe to match exactly what the model expects

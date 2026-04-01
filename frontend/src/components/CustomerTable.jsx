@@ -1,51 +1,124 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
+const getRiskClass = (level) => {
+  if (level === "High")   return "badge badge-high";
+  if (level === "Medium") return "badge badge-medium";
+  return "badge badge-low";
+};
 
 const CustomerTable = ({ customers, onRowClick }) => {
   const [filter, setFilter] = useState("All");
+  const [search, setSearch] = useState("");
 
-  const filteredCustomers = customers.filter((c) =>
-    filter === "All" ? true : c.riskLevel === filter
-  );
+  const filtered = customers
+    .filter((c) => filter === "All" || c.riskLevel === filter)
+    .filter((c) => !search || c.customerID.toString().includes(search))
+    .sort((a, b) => b.churnProbability - a.churnProbability)
+    .slice(0, 20);
 
   return (
     <div>
-      {/* Filter dropdown */}
-      <div style={{ marginBottom: "10px" }}>
-        <label style={{ marginRight: "10px" }}>Filter by Risk Level:</label>
-        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-          <option>All</option>
-          <option>High</option>
-          <option>Medium</option>
-          <option>Low</option>
-        </select>
+      {/* Controls */}
+      <div style={{
+        display: "flex",
+        gap: "12px",
+        marginBottom: "16px",
+        flexWrap: "wrap",
+        alignItems: "center",
+      }}>
+        <input
+          type="text"
+          placeholder="Search customer ID…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          style={{ minWidth: 200 }}
+        />
+        <div style={{ display: "flex", gap: "6px" }}>
+          {["All", "High", "Medium", "Low"].map((lvl) => (
+            <button
+              key={lvl}
+              className="btn btn-secondary"
+              onClick={() => setFilter(lvl)}
+              style={{
+                padding: "6px 14px",
+                fontSize: "0.8rem",
+                background: filter === lvl ? "var(--accent-glow)" : "var(--bg-elevated)",
+                borderColor: filter === lvl ? "rgba(56,189,248,0.4)" : "var(--border)",
+                color: filter === lvl ? "var(--accent)" : "var(--text-muted)",
+              }}
+            >{lvl}</button>
+          ))}
+        </div>
+        <span style={{ marginLeft: "auto", fontSize: "0.8rem", color: "var(--text-dim)" }}>
+          Showing {filtered.length} of {customers.length} customers
+        </span>
       </div>
 
       {/* Table */}
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr style={{ borderBottom: "1px solid #ccc" }}>
-            <th>Customer ID</th>
-            <th>Churn Probability</th>
-            <th>Risk Level</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCustomers
-            .sort((a, b) => b.churnProbability - a.churnProbability)
-            .slice(0, 20)
-            .map((c) => (
-              <tr
-                key={c.customerID}
-                style={{ cursor: "pointer" }}
-                onClick={() => onRowClick(c)}
-              >
-                <td>{c.customerID}</td>
-                <td>{(c.churnProbability * 100).toFixed(1)}%</td>
-                <td>{c.riskLevel}</td>
+      <div style={{
+        background: "var(--bg-card)",
+        border: "1px solid var(--border-subtle)",
+        borderRadius: "var(--radius-lg)",
+        overflow: "hidden",
+      }}>
+        <table>
+          <thead>
+            <tr>
+              <th>Customer ID</th>
+              <th>Churn Probability</th>
+              <th>Risk Level</th>
+              <th style={{ textAlign: "right" }}>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((c, i) => (
+              <tr key={c.customerID} onClick={() => onRowClick(c)}
+                style={{ animationDelay: `${i * 20}ms` }}>
+                <td className="mono" style={{ color: "var(--text-muted)", fontSize: "0.82rem" }}>
+                  #{c.customerID}
+                </td>
+                <td>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <div style={{
+                      width: 80,
+                      height: 6,
+                      background: "var(--bg-elevated)",
+                      borderRadius: 3,
+                      overflow: "hidden",
+                    }}>
+                      <div style={{
+                        width: `${c.churnProbability * 100}%`,
+                        height: "100%",
+                        background: c.riskLevel === "High" ? "var(--high)"
+                          : c.riskLevel === "Medium" ? "var(--medium)" : "var(--low)",
+                        borderRadius: 3,
+                        transition: "width 0.5s ease",
+                      }} />
+                    </div>
+                    <span className="mono" style={{ fontSize: "0.82rem" }}>
+                      {(c.churnProbability * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <span className={getRiskClass(c.riskLevel)}>{c.riskLevel}</span>
+                </td>
+                <td style={{ textAlign: "right" }}>
+                  <span style={{ fontSize: "0.75rem", color: "var(--accent)", opacity: 0.7 }}>
+                    View →
+                  </span>
+                </td>
               </tr>
             ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+
+        {filtered.length === 0 && (
+          <div style={{ padding: "48px", textAlign: "center", color: "var(--text-dim)" }}>
+            No customers match the current filter.
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,31 +1,29 @@
-// ExportReport.jsx
-import React from "react";
-
-const ExportReport = ({ summary, customers }) => {
+const ExportReport = ({ summary, customers, label = "Export CSV" }) => {
   const handleExport = () => {
-    if (!summary || !customers) return;
-
-    const header = ["CustomerID", "Churn Probability", "Risk Level"];
-    const rows = customers.map(c => [
+    if (!customers?.length) return;
+    const header = ["CustomerID", "Churn Probability (%)", "Risk Level"];
+    const rows = customers.map((c) => [
       c.customerID,
       (c.churnProbability * 100).toFixed(1),
       c.riskLevel,
     ]);
-
-    const csvContent =
-      [header, ...rows].map(e => e.join(",")).join("\n");
-
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const csv = [header, ...rows].map((r) => r.join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "churn_report.csv");
-    link.click();
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "crim_churn_report.csv";
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
-    <button onClick={handleExport} style={{ padding: "10px 20px" }}>
-      Export Report
+    <button
+      className="btn btn-secondary"
+      onClick={handleExport}
+      disabled={!customers?.length}
+    >
+      ↓ {label}
     </button>
   );
 };
