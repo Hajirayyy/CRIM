@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Customers from "./pages/Customers";
-import CustomerProfile from "./pages/CustomerProfile";
 import Reports from "./pages/Reports";
 import Uploads from "./pages/Uploads";
 import Login from "./pages/Login";
@@ -20,14 +19,6 @@ const App = () => {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
 
   const isLoggedIn = Boolean(token);
-
-  // Load token on first render
-  useEffect(() => {
-    const savedToken = localStorage.getItem("token");
-    if (savedToken) {
-      setToken(savedToken);
-    }
-  }, []);
 
   const handleLogin = (newToken) => {
     localStorage.setItem("token", newToken);
@@ -121,17 +112,6 @@ const App = () => {
             element={
               isLoggedIn ? (
                 <Customers customers={customers} uploadId={uploadId} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-
-          <Route
-            path="/customers/:id"
-            element={
-              isLoggedIn ? (
-                <CustomerProfile customers={customers} />
               ) : (
                 <Navigate to="/login" />
               )

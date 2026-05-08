@@ -1,8 +1,14 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = ({ isLoggedIn, onLogout }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const hideOnPages = ["/login", "/signup"];
+  if (hideOnPages.includes(location.pathname)) {
+    return null;
+  }
 
   const linkStyle = ({ isActive }) => ({
     padding: "6px 14px",
@@ -10,8 +16,11 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
     textDecoration: "none",
     fontSize: "14px",
     fontWeight: "500",
-    color: isActive ? "#fff" : "#aaa",
-    backgroundColor: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+    color: isActive ? "#a3e635" : "rgba(255,255,255,0.38)",
+    backgroundColor: isActive ? "rgba(163,230,53,0.08)" : "transparent",
+    border: isActive
+      ? "1px solid rgba(163,230,53,0.22)"
+      : "1px solid transparent",
     transition: "all 0.2s",
   });
 
@@ -22,8 +31,10 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
         alignItems: "center",
         justifyContent: "space-between",
         padding: "12px 40px",
-        backgroundColor: "#111118",
-        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        backgroundColor: "rgba(5,5,5,0.75)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(255,255,255,0.04)",
         position: "sticky",
         top: 0,
         zIndex: 100,
@@ -33,10 +44,10 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
       <span
         onClick={() => navigate("/")}
         style={{
-          fontStyle: "italic",
-          fontWeight: "600",
-          fontSize: "16px",
-          color: "#fff",
+          fontWeight: "800",
+          fontSize: "18px",
+          letterSpacing: "2px",
+          color: "#a3e635",
           cursor: "pointer",
         }}
       >
@@ -45,43 +56,59 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
 
       {/* Center Links */}
       <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-        <NavLink to="/" end style={linkStyle}>Home</NavLink>
-        <NavLink to="/dashboard" style={linkStyle}>Dashboard</NavLink>
-        <NavLink to="/uploads" style={linkStyle}>Uploads</NavLink>
-        <NavLink to="/customers" style={linkStyle}>Customers</NavLink>
-        <NavLink to="/reports" style={linkStyle}>Reports</NavLink>
+        <NavLink to="/" end style={linkStyle}>
+          Home
+        </NavLink>
+        <NavLink to="/dashboard" style={linkStyle}>
+          Dashboard
+        </NavLink>
+        <NavLink to="/uploads" style={linkStyle}>
+          Uploads
+        </NavLink>
+        <NavLink to="/customers" style={linkStyle}>
+          Customers
+        </NavLink>
+        <NavLink to="/reports" style={linkStyle}>
+          Reports
+        </NavLink>
       </div>
 
-      {/* RIGHT SIDE (THIS IS THE IMPORTANT PART) */}
+      {/* Right side */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-
         {isLoggedIn ? (
-          // 🔴 LOGOUT BUTTON
           <button
             onClick={onLogout}
             style={{
-              padding: "8px 16px",
-              backgroundColor: "#ff4d4f",
-              color: "#fff",
-              border: "none",
+              padding: "8px 18px",
+              backgroundColor: "transparent",
+              color: "rgba(255,255,255,0.45)",
+              border: "1px solid rgba(255,255,255,0.12)",
               borderRadius: "8px",
               fontSize: "13px",
               fontWeight: "600",
               cursor: "pointer",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,77,79,0.45)";
+              e.currentTarget.style.color = "#ff4d4f";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+              e.currentTarget.style.color = "rgba(255,255,255,0.45)";
             }}
           >
             Logout
           </button>
         ) : (
-          // 🟢 LOGIN + SIGNUP
           <>
             <button
               onClick={() => navigate("/login")}
               style={{
                 padding: "8px 16px",
                 backgroundColor: "transparent",
-                color: "#ccc",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "rgba(255,255,255,0.45)",
+                border: "1px solid rgba(255,255,255,0.12)",
                 borderRadius: "8px",
                 fontSize: "13px",
                 fontWeight: "600",
@@ -90,13 +117,12 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
             >
               Login
             </button>
-
             <button
               onClick={() => navigate("/signup")}
               style={{
-                padding: "8px 16px",
-                backgroundColor: "#22d3a0",
-                color: "#0d0d14",
+                padding: "8px 18px",
+                backgroundColor: "#a3e635",
+                color: "#0a0a0a",
                 border: "none",
                 borderRadius: "8px",
                 fontSize: "13px",
@@ -108,7 +134,6 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
             </button>
           </>
         )}
-
       </div>
     </nav>
   );

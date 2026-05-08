@@ -1,99 +1,207 @@
-import { useState, useRef } from "react";
-import axios from "axios";
+import { useState } from "react";
 
-const FileUpload = ({ onData, compact = false }) => {
-  const [file, setFile] = useState(null);
-  const [loading, setLoading] = useState(false);
+const BASE_URL = "http://127.0.0.1:8000/api";
+
+const CsvIcon = () => <div style={{ fontSize: "2rem" }}>📄</div>;
+
+const FileUpload = ({ onUploadSuccess }) => {
   const [dragging, setDragging] = useState(false);
-  const inputRef = useRef();
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleUpload = async () => {
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState(null);
+
+  const simulateProgress = (onComplete) => {
+    let p = 0;
+
+    setProgress(0);
+    setDone(false);
+
+    const interval = setInterval(() => {
+      p += Math.random() * 18 + 6;
+
+      if (p >= 95) {
+        p = 95;
+        clearInterval(interval);
+        onComplete();
+      }
+
+      setProgress(Math.round(p));
+    }, 120);
+  };
+
+  const uploadFile = async (file) => {
     if (!file) return;
-    setLoading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-    try {
-      const res = await axios.post("http://127.0.0.1:8000/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      onData(res.data);
-      setFile(null);
-    } catch (err) {
-      console.error("Upload failed:", err);
-      alert("Upload failed. Make sure the backend is running at http://127.0.0.1:8000");
-    } finally {
-      setLoading(false);
+
+    if (!file.name.toLowerCase().endsWith(".csv")) {
+      setError("Only CSV files are allowed.");
+      return;
     }
+
+    const MAX_SIZE = 20 * 1024 * 1024;
+
+    if (file.size > MAX_SIZE) {
+      setError("File is too large. Maximum allowed size is 20MB.");
+      return;
+    }
+    setSelectedFile(file);
+    setError(null);
+    setLoading(true);
+
+    simulateProgress(async () => {
+      const fd = new FormData();
+      fd.append("file", file);
+
+      try {
+        const res = await fetch(`${BASE_URL}/upload/preview`, {
+          method: "POST",
+          body: fd,
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.detail || "Upload failed");
+        }
+
+        const data = await res.json();
+
+        setProgress(100);
+        setDone(true);
+
+        setTimeout(() => {
+          setLoading(false);
+
+          if (onUploadSuccess) {
+            onUploadSuccess(file, data);
+          }
+        }, 500);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    });
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
+
     setDragging(false);
-    if (e.dataTransfer.files?.[0]) setFile(e.dataTransfer.files[0]);
+
+    const file = e.dataTransfer.files[0];
+
+    if (file) {
+      uploadFile(file);
+    }
+  };
+
+  const handleBrowse = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      uploadFile(file);
+    }
   };
 
   return (
-    <div style={{ maxWidth: compact ? "100%" : "560px" }}>
-      {/* Drop Zone */}
-      <div
-        onDrop={handleDrop}
-        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+    <div>
+      <label
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragging(true);
+        }}
         onDragLeave={() => setDragging(false)}
-        onClick={() => inputRef.current.click()}
+        onDrop={handleDrop}
         style={{
-          border: `2px dashed ${dragging ? "var(--accent)" : file ? "var(--low)" : "var(--border)"}`,
-          borderRadius: "var(--radius-lg)",
-          padding: compact ? "32px" : "56px 40px",
-          textAlign: "center",
-          cursor: "pointer",
-          background: dragging ? "var(--accent-glow)" : file ? "var(--low-bg)" : "var(--bg-card)",
-          transition: "all 0.2s ease",
-          marginBottom: "16px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "12px",
+          padding: "48px",
+          borderRadius: "12px",
+          cursor: loading ? "default" : "pointer",
+          border: `2px dashed ${
+            dragging ? "rgba(163,230,53,0.55)" : "rgba(163,230,53,0.22)"
+          }`,
+          background: "rgba(17,19,24,0.45)",
         }}
       >
-        <div style={{ fontSize: compact ? "2rem" : "3rem", marginBottom: "12px" }}>
-          {file ? "📄" : "☁"}
+        <CsvIcon />
+
+        <p style={{ margin: 0, color: "#fff", fontWeight: 600 }}>
+          {loading ? "Uploading..." : "Choose a file or drag & drop"}
+        </p>
+
+        <p
+          style={{
+            margin: 0,
+            fontSize: "0.85rem",
+            color: "rgba(255,255,255,0.45)",
+          }}
+        >
+          .CSV format only, up to 20MB
+        </p>
+
+        <input
+          type="file"
+          accept=".csv"
+          onChange={handleBrowse}
+          style={{ display: "none" }}
+          disabled={loading}
+        />
+      </label>
+
+      {selectedFile && (
+        <div
+          style={{
+            marginTop: "16px",
+            color: "#fff",
+          }}
+        >
+          <p style={{ marginBottom: "8px" }}>{selectedFile.name}</p>
+
+          <div
+            style={{
+              height: "5px",
+              borderRadius: "999px",
+              background: "rgba(255,255,255,0.08)",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                height: "100%",
+                width: `${progress}%`,
+                background: "#a3e635",
+                transition: "width 0.2s ease",
+              }}
+            />
+          </div>
+
+          <p
+            style={{
+              marginTop: "8px",
+              fontSize: "0.8rem",
+              color: done ? "#a3e635" : "rgba(255,255,255,0.45)",
+            }}
+          >
+            {done ? "Completed" : `${progress}%`}
+          </p>
         </div>
-        {file ? (
-          <>
-            <p style={{ color: "var(--low)", fontWeight: 600, marginBottom: "4px" }}>{file.name}</p>
-            <p style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>
-              {(file.size / 1024).toFixed(1)} KB · Click to change
-            </p>
-          </>
-        ) : (
-          <>
-            <p style={{ color: "var(--text)", fontWeight: 600, marginBottom: "6px" }}>
-              Drop your CSV file here
-            </p>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-              or click to browse — .csv files only
-            </p>
-          </>
-        )}
-      </div>
+      )}
 
-      <input
-        ref={inputRef}
-        type="file"
-        accept=".csv"
-        style={{ display: "none" }}
-        onChange={(e) => setFile(e.target.files[0])}
-      />
-
-      <button
-        className="btn btn-primary"
-        onClick={handleUpload}
-        disabled={!file || loading}
-        style={{ width: "100%", justifyContent: "center", padding: "12px" }}
-      >
-        {loading ? (
-          <>
-            <span style={{ display: "inline-block", animation: "spin 1s linear infinite" }}>⟳</span>
-            Analyzing…
-          </>
-        ) : "Upload & Analyze"}
-      </button>
+      {error && (
+        <div
+          style={{
+            marginTop: "12px",
+            color: "#f87171",
+            fontSize: "0.85rem",
+          }}
+        >
+          {error}
+        </div>
+      )}
     </div>
   );
 };
