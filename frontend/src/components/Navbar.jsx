@@ -10,6 +10,18 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
     return null;
   }
 
+  // ── Hide the full nav on model-insights when not logged in ──
+  // (MinimalHeader inside ModelInsights handles that case)
+  if (location.pathname === "/model-insights" && !isLoggedIn) {
+    return null;
+  }
+
+  // ── Logout: clear auth state then redirect to /login ──
+  const handleLogout = () => {
+    onLogout();
+    navigate("/login");
+  };
+
   const linkStyle = ({ isActive }) => ({
     padding: "6px 14px",
     borderRadius: "20px",
@@ -56,28 +68,19 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
 
       {/* Center Links */}
       <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-        <NavLink to="/" end style={linkStyle}>
-          Home
-        </NavLink>
-        <NavLink to="/dashboard" style={linkStyle}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/uploads" style={linkStyle}>
-          Uploads
-        </NavLink>
-        <NavLink to="/customers" style={linkStyle}>
-          Customers
-        </NavLink>
-        <NavLink to="/reports" style={linkStyle}>
-          Reports
-        </NavLink>
+        <NavLink to="/" end style={linkStyle}>Home</NavLink>
+        <NavLink to="/dashboard" style={linkStyle}>Dashboard</NavLink>
+        <NavLink to="/uploads" style={linkStyle}>Uploads</NavLink>
+        <NavLink to="/customers" style={linkStyle}>Customers</NavLink>
+        <NavLink to="/reports" style={linkStyle}>Reports</NavLink>
+        <NavLink to="/model-insights" style={linkStyle}>Model Insights</NavLink>
       </div>
 
       {/* Right side */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         {isLoggedIn ? (
           <button
-            onClick={onLogout}
+            onClick={handleLogout}
             style={{
               padding: "8px 18px",
               backgroundColor: "transparent",

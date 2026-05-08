@@ -21,14 +21,13 @@ Customer churn (i.e., the rate at which customers stop doing business with a com
 ## Features
 
 - **CSV Data Upload** — Upload structured customer datasets for analysis
-- **Churn Prediction Engine** — Random Forest classifier (TBD) that calculates churn probability per customer
+- **Churn Prediction Engine** — XGBoost Model calculates churn probability per customer
 - **Risk Categorization** — Automatically groups customers into Low, Medium, or High risk
 - **Explainability (XAI)** — SHAP-based feature importance to explain predictions
 - **Customer Profile View** — Detailed view of individual customer attributes and risk factors
 - **Search & Filtering** — Filter customers by risk level, tenure, contract type, and more
 - **Churn Summary Dashboard** — Overview of total customers, churn rate, and risk distribution
-- **Report Generation** — Export results as PDF or Excel
-- **Trend Analysis** — Compare current churn results with previous uploads
+- **Report Generation** — Export results easily as Excel file
 
 ---
 
@@ -41,7 +40,7 @@ Customer churn (i.e., the rate at which customers stop doing business with a com
 | Machine Learning | Scikit-learn, SHAP |
 | Data Processing | Pandas, NumPy |
 | Visualization | Recharts, Matplotlib, Seaborn |
-| Database | SQLite |
+| Database | MongoDB |
 | Export | OpenPyXL, ReportLab |
 
 ---
@@ -52,42 +51,80 @@ Customer churn (i.e., the rate at which customers stop doing business with a com
 CRIM/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py               # FastAPI app entry point
-│   │   ├── database.py           # SQLite setup
+│   │   ├── auth/
+│   │   │   ├── deps.py                 # Authentication dependencies
+│   │   │   └── security.py             # JWT hashing & security utilities
+│   │   │
+│   │   ├── db/
+│   │   │   ├── crud.py                 # Database CRUD operations
+│   │   │   └── database.py             # Database connection setup
+│   │   │
+│   │   ├── ml/
+│   │   │   ├── preprocess.py           # Data cleaning & encoding
+│   │   │   ├── model.py                # Load trained ML model
+│   │   │   ├── predict.py              # Churn prediction logic
+│   │   │   ├── recommendations.py      # Retention strategy generation
+│   │   │   └── shap_explainer.py       # SHAP explainability analysis
+│   │   │
 │   │   ├── routes/
-│   │   │   ├── upload.py         # CSV upload endpoint
-│   │   │   └── predict.py        # Prediction endpoint
-│   │   └── ml/
-│   │       ├── preprocess.py     # Data cleaning & encoding
-│   │       ├── model.py          # Load trained model
-│   │       └── predict.py        # Run predictions & risk categorization
+│   │   │   ├── auth.py                 # Authentication endpoints
+│   │   │   ├── evaluate.py             # Model evaluation endpoints
+│   │   │   ├── recommendations.py      # Recommendation endpoints
+│   │   │   └── upload.py               # CSV upload endpoints
+│   │   │
+│   │   └── main.py                     # FastAPI application entry point
+│   │
 │   ├── models/
-│   │   └── churn_model.pkl       # Saved trained model
+│   │   ├── churn_model.pkl             # Trained XGBoost churn model
+│   │   ├── feature_columns.pkl         # Saved feature column mappings
+│   │   └── users.py                    # User model/schema
+│   │
 │   ├── requirements.txt
 │   └── .env.example
+│
 ├── frontend/
 │   ├── src/
-│   │   ├── pages/
-│   |   │   |── Dashboard.jsx
-│   |   │   └── TBD more pages 
+│   │   ├── api/
+│   │   │   ├── auth.js                 # Authentication API calls
+│   │   │   └── recommendation.js       # Recommendation API integration
+│   │   │
 │   │   ├── components/
-│   │   │   ├── FileUpload.jsx
-│   │   │   ├── SummaryCards.jsx
-│   │   │   └── CustomerTable.jsx
+│   │   │   ├── CustomerModal.jsx       # Customer detail modal
+│   │   │   ├── CustomerTable.jsx       # Customer data table
+│   │   │   ├── ExportReport.jsx        # PDF/Excel export component
+│   │   │   ├── FileUpload.jsx          # CSV upload component
+│   │   │   └──NavBar.jsx              # Navigation bar
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Customers.jsx           # Customer management page
+│   │   │   ├── Dashboard.jsx           # Analytics dashboard
+│   │   │   ├── Home.jsx                # Landing page
+│   │   │   ├── Login.jsx               # Login page
+│   │   │   ├── Reports.jsx             # Reports & exports page
+│   │   │   ├── Signup.jsx              # User registration page
+│   │   │   └── Uploads.jsx             # Dataset upload page
+│   │   │
+│   │   ├── main.jsx
 │   │   └── App.jsx
+│   │
 │   ├── public/
 │   └── package.json
-├── database/
-│   ├── schema.sql
-│   ├── seed.sql
-│   └── erd.png
+│
 ├── docs/
-│   ├── report.docx
-│   └── api-docs.md
+│   ├── iteration1.docx
+│   ├── iteration2.docx
+│   └── iteration3.docx
+│
 ├── notebooks/
 │   ├── model_training.ipynb
-│   └── data/
-│       └── telco_churn.csv  # dataset from Kaggle
+│   ├── data/
+│   │   └── telco_churn.csv             # Kaggle Telco churn dataset
+│   │
+│   └── testDatasets/
+│       ├── test_dataset_1.csv
+│       ├── test_dataset_2.csv
+│       └── test_dataset_3.csv
+│
 ├── README.md
 └── .gitignore
 ```
@@ -153,7 +190,7 @@ The project is built across 3 iterations:
 - Explainable AI (XAI) using SHAP values
 - Predictive Analytics
 - Feature Importance Analysis
-
+- Retention Strategies Recommendations
 ---
 
 ## Authors

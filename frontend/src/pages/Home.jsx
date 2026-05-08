@@ -428,6 +428,15 @@ const Home = () => {
             Upload Your Data →
           </button>
         )}
+        <div style={{ marginTop: "16px" }}>
+          <button
+            className="cta-ghost"
+            onClick={() => navigate("/model-insights")}
+            style={{ padding: "11px 28px", background: "transparent", color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "9px", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s", letterSpacing: "0.3px" }}
+          >
+            Behind the Predictions →
+          </button>
+        </div>
       </div>
     </div>
   );

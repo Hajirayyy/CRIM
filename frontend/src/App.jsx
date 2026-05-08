@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -9,7 +14,7 @@ import Reports from "./pages/Reports";
 import Uploads from "./pages/Uploads";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-
+import ModelInsights from "./pages/ModelInsights";
 import "./index.css";
 
 const App = () => {
@@ -46,13 +51,13 @@ const App = () => {
 
   return (
     <Router>
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-
+      <div
+        style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      >
         {/* Navbar */}
         <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
 
         <Routes>
-
           {/* ---------------- HOME ---------------- */}
           <Route path="/" element={<Home />} />
 
@@ -70,13 +75,7 @@ const App = () => {
 
           <Route
             path="/signup"
-            element={
-              !isLoggedIn ? (
-                <Signup />
-              ) : (
-                <Navigate to="/dashboard" />
-              )
-            }
+            element={!isLoggedIn ? <Signup /> : <Navigate to="/dashboard" />}
           />
 
           {/* ---------------- PROTECTED ROUTES ---------------- */}
@@ -85,7 +84,11 @@ const App = () => {
             path="/dashboard"
             element={
               isLoggedIn ? (
-                <Dashboard summary={summary} customers={customers} uploadId={uploadId} />
+                <Dashboard
+                  summary={summary}
+                  customers={customers}
+                  uploadId={uploadId}
+                />
               ) : (
                 <Navigate to="/login" />
               )
@@ -127,6 +130,10 @@ const App = () => {
                 <Navigate to="/login" />
               )
             }
+          />
+
+          <Route path="/model-insights" 
+          element={<ModelInsights isLoggedIn={isLoggedIn} />}
           />
 
         </Routes>
