@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CheckIcon = () => (
@@ -28,10 +28,14 @@ const SpinnerIcon = () => (
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [status, setStatus] = useState("loading"); // "loading" | "success" | "error"
+  const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
+  const hasVerified = useRef(false);
 
   useEffect(() => {
+    if (hasVerified.current) return;
+    hasVerified.current = true;
+
     const token = searchParams.get("token");
     if (!token) {
       setStatus("error");
@@ -41,7 +45,9 @@ export default function VerifyEmail() {
 
     const verify = async () => {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/verify-email?token=${encodeURIComponent(token)}`);
+        const res = await fetch(
+          `http://127.0.0.1:8000/verify-email?token=${encodeURIComponent(token)}`
+        );
         const data = await res.json();
         if (res.ok) {
           setStatus("success");
