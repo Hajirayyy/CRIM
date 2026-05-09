@@ -175,3 +175,13 @@ input[type="range"] { accent-color: #38bdf8; }
   .grid-charts { grid-template-columns: 1fr; }
   .grid-stats  { grid-template-columns: repeat(2, 1fr); }
 }
+/* Fix browser autofill background override */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #0c0e13 inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
+}

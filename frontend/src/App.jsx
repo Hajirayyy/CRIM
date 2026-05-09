@@ -14,6 +14,8 @@ import Reports from "./pages/Reports";
 import Uploads from "./pages/Uploads";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import VerifyEmail from "./pages/VerifyEmail";
+import ResetPassword from "./pages/ResetPassword";
 import ModelInsights from "./pages/ModelInsights";
 import "./index.css";
 
@@ -76,6 +78,14 @@ const App = () => {
           <Route
             path="/signup"
             element={!isLoggedIn ? <Signup /> : <Navigate to="/dashboard" />}
+          />
+          
+          <Route 
+            path="/verify-email" element={<VerifyEmail />} 
+          />
+          
+          <Route 
+            path="/reset-password" element={<ResetPassword />} 
           />
 
           {/* ---------------- PROTECTED ROUTES ---------------- */}
