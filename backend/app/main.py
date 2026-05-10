@@ -9,11 +9,14 @@ from app.routes.contact import router as contact_router
 
 app = FastAPI()
 
-# Allow requests from our React app
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://crim-qnwa44xcc-hajirahrahmat16-gmailcoms-projects.vercel.app", "http://localhost:5173"],
-    allow_credentials=True,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://crim-three.vercel.app",
+    ],
+    allow_origin_regex=r"https://crim-.*\.vercel\.app",
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
