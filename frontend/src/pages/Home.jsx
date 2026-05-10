@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+import { BASE_URL } from "../api/api";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const handleContact = async () => {
   if (!contactForm.name || !contactForm.email || !contactForm.message) return;
   setContactStatus("sending");
   try {
-    const res = await fetch("http://localhost:8000/contact", {
+    const res = await fetch(`${BASE_URL}/contact`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(contactForm),

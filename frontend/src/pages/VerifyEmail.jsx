@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { BASE_URL } from "../api/api";
 
 const CheckIcon = () => (
   <svg width="52" height="52" viewBox="0 0 24 24" fill="none" style={{ margin: "0 auto 20px", display: "block" }}>
@@ -46,7 +47,7 @@ export default function VerifyEmail() {
     const verify = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/verify-email?token=${encodeURIComponent(token)}`
+          `${BASE_URL}/verify-email?token=${encodeURIComponent(token)}`
         );
         const data = await res.json();
         if (res.ok) {

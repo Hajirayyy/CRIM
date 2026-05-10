@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { BASE_URL } from "../api/api";
 
 const LockIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
@@ -69,7 +70,7 @@ export default function ResetPassword() {
 
     setLoading(true);
     try {
-      const res = await fetch("http://127.0.0.1:8000/reset-password", {
+      const res = await fetch(`${BASE_URL}/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, new_password: newPassword }),
