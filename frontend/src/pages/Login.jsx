@@ -82,7 +82,7 @@ export default function Login({ onLogin }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
+x 
       const data = await res.json();
 
       if (!res.ok) {
