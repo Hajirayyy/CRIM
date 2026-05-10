@@ -1,9 +1,31 @@
 import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
 const Home = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
+  const [contactForm, setContactForm]   = useState({ name: "", email: "", message: "" });
+const [contactStatus, setContactStatus] = useState("idle"); // idle | sending | sent | error
+
+const handleContact = async () => {
+  if (!contactForm.name || !contactForm.email || !contactForm.message) return;
+  setContactStatus("sending");
+  try {
+    const res = await fetch("http://localhost:8000/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(contactForm),
+    });
+    if (!res.ok) throw new Error();
+    setContactStatus("sent");
+    setContactForm({ name: "", email: "", message: "" });
+    setTimeout(() => setContactStatus("idle"), 4000);
+  } catch {
+    setContactStatus("error");
+    setTimeout(() => setContactStatus("idle"), 3000);
+  }
+};
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.location.reload();
@@ -438,6 +460,72 @@ const Home = () => {
           </button>
         </div>
       </div>
+      {/* ── Contact Us ── */}
+<div style={{ maxWidth: "600px", margin: "0 auto", padding: "0 40px 100px", position: "relative", zIndex: 1 }}>
+  <h2 style={{ fontSize: "26px", fontWeight: 700, color: "#fff", textAlign: "center", marginBottom: "8px" }}>
+    Contact Us
+  </h2>
+  <p style={{ fontSize: "13px", color: "#5a5d78", textAlign: "center", marginBottom: "36px" }}>
+    Have a question or feedback? We'd love to hear from you.
+  </p>
+
+  <div style={{ background: "#0f1117", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "14px", padding: "36px 32px" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+
+      {/* Name */}
+      <div>
+        <label style={{ fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.8px", textTransform: "uppercase", display: "block", marginBottom: "7px" }}>
+          Name
+        </label>
+        <input
+          type="text"
+          placeholder="Your name"
+          value={contactForm.name}
+          onChange={e => setContactForm(p => ({ ...p, name: e.target.value }))}
+          style={{ width: "100%", padding: "10px 14px", background: "#050505", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", color: "#e8e9f0", fontSize: "13px", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
+        />
+      </div>
+
+      {/* Email */}
+      <div>
+        <label style={{ fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.8px", textTransform: "uppercase", display: "block", marginBottom: "7px" }}>
+          Email
+        </label>
+        <input
+          type="email"
+          placeholder="you@example.com"
+          value={contactForm.email}
+          onChange={e => setContactForm(p => ({ ...p, email: e.target.value }))}
+          style={{ width: "100%", padding: "10px 14px", background: "#050505", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", color: "#e8e9f0", fontSize: "13px", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
+        />
+      </div>
+
+      {/* Message */}
+      <div>
+        <label style={{ fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.8px", textTransform: "uppercase", display: "block", marginBottom: "7px" }}>
+          Message
+        </label>
+        <textarea
+          placeholder="What's on your mind?"
+          rows={4}
+          value={contactForm.message}
+          onChange={e => setContactForm(p => ({ ...p, message: e.target.value }))}
+          style={{ width: "100%", padding: "10px 14px", background: "#050505", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", color: "#e8e9f0", fontSize: "13px", fontFamily: "inherit", outline: "none", resize: "vertical", boxSizing: "border-box" }}
+        />
+      </div>
+
+      {/* Submit */}
+      <button
+        onClick={handleContact}
+        disabled={contactStatus === "sending"}
+        style={{ padding: "12px", background: contactStatus === "sent" ? "rgba(163,230,53,0.15)" : "#a3e635", color: contactStatus === "sent" ? "#a3e635" : "#0a0a0a", border: contactStatus === "sent" ? "1px solid rgba(163,230,53,0.3)" : "none", borderRadius: "8px", fontSize: "13px", fontWeight: 700, cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s", letterSpacing: "0.3px" }}
+      >
+        {contactStatus === "sending" ? "Sending…" : contactStatus === "sent" ? "✓ Message Sent!" : contactStatus === "error" ? "Failed — Try Again" : "Send Message"}
+      </button>
+
+    </div>
+  </div>
+</div>
     </div>
   );
 };

@@ -65,6 +65,7 @@ CRIM/
 │   │   │   ├── predict.py              # Churn prediction logic
 │   │   │   ├── recommendations.py      # Retention strategy generation
 │   │   │   └── shap_explainer.py       # SHAP explainability analysis
+│   │   │   └── contact.py              # Contact form
 │   │   │
 │   │   ├── routes/
 │   │   │   ├── auth.py                 # Authentication endpoints
@@ -93,7 +94,7 @@ CRIM/
 │   │   │   ├── CustomerTable.jsx       # Customer data table
 │   │   │   ├── ExportReport.jsx        # PDF/Excel export component
 │   │   │   ├── FileUpload.jsx          # CSV upload component
-│   │   │   └──NavBar.jsx              # Navigation bar
+│   │   │   └── NavBar.jsx              # Navigation bar
 │   │   │
 │   │   ├── pages/
 │   │   │   ├── Customers.jsx           # Customer management page
@@ -102,7 +103,10 @@ CRIM/
 │   │   │   ├── Login.jsx               # Login page
 │   │   │   ├── Reports.jsx             # Reports & exports page
 │   │   │   ├── Signup.jsx              # User registration page
+│   │   │   └── Moelinsights.jsx        # Insights about our model
+│   │   │   └── Reset Password.jsx      # Forgot Password page
 │   │   │   └── Uploads.jsx             # Dataset upload page
+│   │   │   └── VerifyEmail.jsx         # Email Verification page
 │   │   │
 │   │   ├── main.jsx
 │   │   └── App.jsx

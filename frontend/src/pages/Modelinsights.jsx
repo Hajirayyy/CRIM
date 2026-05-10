@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Animation hook
 const useInView = (threshold = 0.15) => {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -16,7 +15,6 @@ const useInView = (threshold = 0.15) => {
   return [ref, visible];
 };
 
-// Design tokens
 const G = {
   accent:       "#a3e635",
   accentDim:    "rgba(163,230,53,0.12)",
@@ -32,10 +30,10 @@ const G = {
 };
 
 const glassCard = {
-  background:         G.card,
-  border:             `1px solid ${G.cardBorder}`,
-  borderRadius:       G.radius,
-  backdropFilter:     G.blur,
+  background:           G.card,
+  border:               `1px solid ${G.cardBorder}`,
+  borderRadius:         G.radius,
+  backdropFilter:       G.blur,
   WebkitBackdropFilter: G.blur,
 };
 
@@ -48,14 +46,13 @@ const sectionTitle = {
 };
 
 const sectionSub = {
-  fontSize:  "0.95rem",
-  color:     G.textMuted,
-  margin:    "0 0 40px",
+  fontSize:   "0.95rem",
+  color:      G.textMuted,
+  margin:     "0 0 40px",
   lineHeight: 1.7,
-  maxWidth:  560,
+  maxWidth:   560,
 };
 
-// SVG icon library
 const Ico = ({ d, size = 22, color = "rgba(163,230,53,0.75)", vb = "0 0 24 24", fill = "none" }) => (
   <svg width={size} height={size} viewBox={vb} fill={fill}
     stroke={color} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -63,7 +60,6 @@ const Ico = ({ d, size = 22, color = "rgba(163,230,53,0.75)", vb = "0 0 24 24", 
   </svg>
 );
 
-// Individual named icons used throughout the page
 const Icons = {
   robot: (s) => (
     <Ico size={s} d={<>
@@ -108,7 +104,6 @@ const Icons = {
       <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
     </>} />
   ),
-  // step icons
   filter: (s) => (
     <Ico size={s} d={<>
       <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
@@ -132,16 +127,13 @@ const Icons = {
       <line x1="1" y1="9" x2="4" y2="9" /><line x1="1" y1="14" x2="4" y2="14" />
     </>} />
   ),
-  zap: (s) => (
-    <Ico size={s} d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-  ),
-  eye: (s) => (
+  zap:  (s) => <Ico size={s} d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />,
+  eye:  (s) => (
     <Ico size={s} d={<>
       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
       <circle cx="12" cy="12" r="3" />
     </>} />
   ),
-  // philosophy icons
   bullseye: (s) => (
     <Ico size={s} d={<>
       <circle cx="12" cy="12" r="10" />
@@ -179,34 +171,15 @@ const Icons = {
       <polyline points="20 6 9 17 4 12" />
     </svg>
   ),
-  csvFile: (s = 38) => (
-    <svg width={s} height={s} viewBox="0 0 24 24" fill="none"
-      stroke="rgba(163,230,53,0.65)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-      <polyline points="14 2 14 8 20 8" />
-      <line x1="8" y1="13" x2="16" y2="13" />
-      <line x1="8" y1="17" x2="16" y2="17" />
-      <line x1="8" y1="9" x2="10" y2="9" />
-    </svg>
-  ),
-  // hero brain/ML icon
-  brain: (s = 56) => (
-    <svg width={s} height={s} viewBox="0 0 24 24" fill="none"
-      stroke="rgba(163,230,53,0.80)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-1.98-3 2.5 2.5 0 0 1-1.32-4.24 3 3 0 0 1 .34-5.58 2.5 2.5 0 0 1 1.32-4.24A2.5 2.5 0 0 1 9.5 2z"/>
-      <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 1.98-3 2.5 2.5 0 0 0 1.32-4.24 3 3 0 0 0-.34-5.58 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 14.5 2z"/>
-    </svg>
-  ),
 };
 
-// Section wrapper
 const Section = ({ children, style = {} }) => {
   const [ref, visible] = useInView();
   return (
     <div ref={ref} style={{
       opacity:    visible ? 1 : 0,
-      transform:  visible ? "translateY(0)" : "translateY(32px)",
-      transition: "opacity 0.65s ease, transform 0.65s ease",
+      transform:  visible ? "translateY(0)" : "translateY(16px)",
+      transition: "opacity 0.3s ease, transform 0.3s ease",
       ...style,
     }}>
       {children}
@@ -214,7 +187,6 @@ const Section = ({ children, style = {} }) => {
   );
 };
 
-// Feature chip
 const Chip = ({ label, rank }) => {
   const sizes = ["1rem","0.95rem","0.88rem","0.82rem","0.78rem","0.75rem","0.72rem"];
   return (
@@ -227,14 +199,12 @@ const Chip = ({ label, rank }) => {
       transition: "all 0.2s", cursor: "default",
     }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background  = "rgba(163,230,53,0.22)";
-        e.currentTarget.style.transform   = "scale(1.06)";
-        e.currentTarget.style.boxShadow   = "0 0 16px rgba(163,230,53,0.20)";
+        e.currentTarget.style.background = "rgba(163,230,53,0.22)";
+        e.currentTarget.style.transform  = "scale(1.04)";
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background  = G.accentDim;
-        e.currentTarget.style.transform   = "scale(1)";
-        e.currentTarget.style.boxShadow   = "none";
+        e.currentTarget.style.background = G.accentDim;
+        e.currentTarget.style.transform  = "scale(1)";
       }}
     >
       {label}
@@ -242,7 +212,6 @@ const Chip = ({ label, rank }) => {
   );
 };
 
-// Stat card
 const StatCard = ({ icon, label, value, sub, delay = 0 }) => {
   const [ref, visible] = useInView();
   return (
@@ -250,18 +219,16 @@ const StatCard = ({ icon, label, value, sub, delay = 0 }) => {
       ...glassCard, padding: "22px 24px",
       display: "flex", flexDirection: "column", gap: 12,
       opacity:    visible ? 1 : 0,
-      transform:  visible ? "translateY(0)" : "translateY(24px)",
-      transition: `opacity 0.55s ${delay}ms ease, transform 0.55s ${delay}ms ease`,
+      transform:  visible ? "translateY(0)" : "translateY(16px)",
+      transition: `opacity 0.3s ${delay}ms ease, transform 0.3s ${delay}ms ease`,
       cursor: "default",
     }}
       onMouseEnter={(e) => {
         e.currentTarget.style.borderColor = G.accentBorder;
-        e.currentTarget.style.boxShadow   = "0 0 28px rgba(163,230,53,0.08)";
-        e.currentTarget.style.transform   = "translateY(-3px)";
+        e.currentTarget.style.transform   = "translateY(-2px)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.borderColor = G.cardBorder;
-        e.currentTarget.style.boxShadow   = "none";
         e.currentTarget.style.transform   = "translateY(0)";
       }}
     >
@@ -285,15 +252,14 @@ const StatCard = ({ icon, label, value, sub, delay = 0 }) => {
   );
 };
 
-// Timeline step
-const TimelineStep = ({ num, icon, title, body, last = false, delay = 0 }) => {
+const TimelineStep = ({ num, icon, title, body, last = false }) => {
   const [ref, visible] = useInView();
   return (
     <div ref={ref} style={{
       display: "flex", gap: 20,
       opacity:    visible ? 1 : 0,
-      transform:  visible ? "translateX(0)" : "translateX(-24px)",
-      transition: `opacity 0.55s ${delay}ms ease, transform 0.55s ${delay}ms ease`,
+      transform:  visible ? "translateX(0)" : "translateX(-16px)",
+      transition: "opacity 0.3s ease, transform 0.3s ease",
     }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
         <div style={{
@@ -301,14 +267,13 @@ const TimelineStep = ({ num, icon, title, body, last = false, delay = 0 }) => {
           background: G.accentDim, border: `2px solid ${G.accentBorder}`,
           display: "flex", alignItems: "center", justifyContent: "center",
           flexShrink: 0, zIndex: 1,
-          boxShadow: "0 0 16px rgba(163,230,53,0.12)",
         }}>
           {icon}
         </div>
         {!last && (
           <div style={{
             width: 1, flex: 1, marginTop: 6,
-            background: "linear-gradient(to bottom, rgba(163,230,53,0.25), transparent)",
+            background: "linear-gradient(to bottom, rgba(163,230,53,0.20), transparent)",
           }} />
         )}
       </div>
@@ -323,14 +288,12 @@ const TimelineStep = ({ num, icon, title, body, last = false, delay = 0 }) => {
   );
 };
 
-// Metric bar
-const MetricBar = ({ label, value, percent, delay = 0 }) => {
+const MetricBar = ({ label, value, percent }) => {
   const [ref, visible] = useInView();
   return (
     <div ref={ref} style={{
       opacity:    visible ? 1 : 0,
-      transform:  visible ? "translateX(0)" : "translateX(-16px)",
-      transition: `opacity 0.5s ${delay}ms ease, transform 0.5s ${delay}ms ease`,
+      transition: "opacity 0.3s ease",
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 7 }}>
         <span style={{ fontSize: "0.9rem", color: G.textPrimary, fontWeight: 600 }}>{label}</span>
@@ -341,23 +304,21 @@ const MetricBar = ({ label, value, percent, delay = 0 }) => {
           height: "100%", borderRadius: 99,
           width: visible ? `${percent}%` : "0%",
           background: "linear-gradient(90deg, #a3e635, #65a30d)",
-          transition: `width 1s ${delay + 100}ms cubic-bezier(0.4,0,0.2,1)`,
+          transition: "width 0.8s cubic-bezier(0.4,0,0.2,1)",
         }} />
       </div>
     </div>
   );
 };
 
-// Collapsible experiment card
-const ExpCard = ({ title, tag, body, delay = 0 }) => {
+const ExpCard = ({ title, tag, body }) => {
   const [open, setOpen] = useState(false);
   const [ref, visible] = useInView();
   return (
     <div ref={ref} style={{
       ...glassCard, overflow: "hidden",
       opacity:    visible ? 1 : 0,
-      transform:  visible ? "translateY(0)" : "translateY(20px)",
-      transition: `opacity 0.5s ${delay}ms ease, transform 0.5s ${delay}ms ease`,
+      transition: "opacity 0.3s ease",
     }}>
       <div onClick={() => setOpen(!open)} style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -386,14 +347,13 @@ const ExpCard = ({ title, tag, body, delay = 0 }) => {
   );
 };
 
-// SHAP bar
-const ShapBar = ({ feature, impact, positive = true, delay = 0 }) => {
+const ShapBar = ({ feature, impact, positive = true }) => {
   const [ref, visible] = useInView();
   return (
     <div ref={ref} style={{
       display: "flex", alignItems: "center", gap: 12, marginBottom: 14,
       opacity:    visible ? 1 : 0,
-      transition: `opacity 0.5s ${delay}ms ease`,
+      transition: "opacity 0.3s ease",
     }}>
       <span style={{ width: 150, fontSize: "0.82rem", color: G.textSub, textAlign: "right", flexShrink: 0 }}>
         {feature}
@@ -405,14 +365,12 @@ const ShapBar = ({ feature, impact, positive = true, delay = 0 }) => {
           background: positive
             ? "linear-gradient(90deg, rgba(239,68,68,0.6), rgba(239,68,68,0.9))"
             : "linear-gradient(90deg, rgba(163,230,53,0.6), #a3e635)",
-          transition: `width 0.9s ${delay + 100}ms cubic-bezier(0.4,0,0.2,1)`,
+          transition: "width 0.8s cubic-bezier(0.4,0,0.2,1)",
         }} />
       </div>
-      {/* Arrow SVG instead of arrow character */}
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
         stroke={positive ? "#f87171" : G.accent} strokeWidth="2.5"
-        strokeLinecap="round" strokeLinejoin="round"
-        style={{ flexShrink: 0 }}>
+        strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
         {positive
           ? <><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" /></>
           : <><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" /></>
@@ -436,62 +394,32 @@ const PulseDot = () => (
 
 const MinimalHeader = ({ isLoggedIn }) => {
   const navigate = useNavigate();
-
   if (isLoggedIn) return null;
-
   return (
-    <nav
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        padding: "16px 48px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        zIndex: 200,
-        background: "rgba(5,5,5,0.75)",
-        backdropFilter: "blur(16px)",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-      }}
-    >
-      {/* Left logo */}
-      <span
-        onClick={() => navigate("/")}
-        style={{
-          fontWeight: 800,
-          fontSize: "17px",
-          letterSpacing: "3px",
-          color: "#a3e635",
-          cursor: "pointer",
-        }}
-      >
+    <nav style={{
+      position: "fixed", top: 0, left: 0, right: 0,
+      padding: "16px 48px",
+      display: "flex", justifyContent: "space-between", alignItems: "center",
+      zIndex: 200,
+      background: "rgba(5,5,5,0.75)",
+      backdropFilter: "blur(16px)",
+      borderBottom: "1px solid rgba(255,255,255,0.05)",
+    }}>
+      <span onClick={() => navigate("/")} style={{
+        fontWeight: 800, fontSize: "17px", letterSpacing: "3px",
+        color: "#a3e635", cursor: "pointer",
+      }}>
         CRIM
       </span>
-
-      {/* Right sign in button */}
-      <button
-        onClick={() => navigate("/login")}
-        style={{
-          padding: "8px 22px",
-          background: "transparent",
-          border: "1px solid rgba(163,230,53,0.45)",
-          color: "#a3e635",
-          borderRadius: "8px",
-          fontSize: "12px",
-          fontWeight: 700,
-          cursor: "pointer",
-          letterSpacing: "0.8px",
-          fontFamily: "inherit",
-          transition: "all 0.2s",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = "rgba(163,230,53,0.1)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = "transparent";
-        }}
+      <button onClick={() => navigate("/login")} style={{
+        padding: "8px 22px", background: "transparent",
+        border: "1px solid rgba(163,230,53,0.45)", color: "#a3e635",
+        borderRadius: "8px", fontSize: "12px", fontWeight: 700,
+        cursor: "pointer", letterSpacing: "0.8px", fontFamily: "inherit",
+        transition: "all 0.2s",
+      }}
+        onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(163,230,53,0.1)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
       >
         Sign In
       </button>
@@ -499,18 +427,15 @@ const MinimalHeader = ({ isLoggedIn }) => {
   );
 };
 
-// MAIN PAGE
 export default function ModelInsights({ isLoggedIn }) {
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   useEffect(() => {
     const t = setTimeout(() => {
       const iv = setInterval(() => {
-        setCount((c) => { if (c >= 79) { clearInterval(iv); return 79; } return c + 1; });
+        setCount((c) => { if (c >= 77) { clearInterval(iv); return 77; } return c + 1; });
       }, 18);
       return () => clearInterval(iv);
     }, 600);
@@ -529,46 +454,38 @@ export default function ModelInsights({ isLoggedIn }) {
 
   return (
     <div style={{
-      backgroundColor: G.bg,
-      minHeight: "100vh",
+      backgroundColor: G.bg, minHeight: "100vh",
       fontFamily: "'Segoe UI', 'Helvetica Neue', sans-serif",
-      color: G.textPrimary,
-      position: "relative",
-      overflowX: "hidden",
+      color: G.textPrimary, position: "relative", overflowX: "hidden",
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
         @keyframes pulse-glow { 0%,100%{opacity:0.18} 50%{opacity:0.35} }
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
         * { box-sizing: border-box; }
         ::selection { background: rgba(163,230,53,0.25); color:#fff; }
       `}</style>
 
       <MinimalHeader isLoggedIn={isLoggedIn} />
 
-      {/* Ambient glows */}
+      {/* Ambient glows — static, no animation */}
       <div style={{
-        position:"fixed", bottom:"-100px", right:"-100px",
-        width:600, height:600, borderRadius:"50%", pointerEvents:"none", zIndex:0,
-        background:"radial-gradient(circle, rgba(163,230,53,0.15) 0%, rgba(163,230,53,0.03) 50%, transparent 70%)",
-        animation:"pulse-glow 5s ease-in-out infinite",
+        position: "fixed", bottom: "-100px", right: "-100px",
+        width: 500, height: 500, borderRadius: "50%", pointerEvents: "none", zIndex: 0,
+        background: "radial-gradient(circle, rgba(163,230,53,0.10) 0%, transparent 70%)",
       }}/>
       <div style={{
-        position:"fixed", top:"10%", left:"-100px",
-        width:400, height:400, borderRadius:"50%", pointerEvents:"none", zIndex:0,
-        background:"radial-gradient(circle, rgba(163,230,53,0.08) 0%, transparent 65%)",
-        animation:"pulse-glow 7s ease-in-out infinite 2s",
+        position: "fixed", top: "10%", left: "-100px",
+        width: 350, height: 350, borderRadius: "50%", pointerEvents: "none", zIndex: 0,
+        background: "radial-gradient(circle, rgba(163,230,53,0.06) 0%, transparent 65%)",
       }}/>
 
-      <div style={{ position:"relative", zIndex:1 }}>
+      <div style={{ position: "relative", zIndex: 1 }}>
 
-        {/* ── HERO ── */}
+        {/* HERO */}
         <div style={{ padding: isLoggedIn ? "160px 24px 80px" : "120px 24px 80px", textAlign: "center", position: "relative" }}>
-          {/* decorative rings */}
-          <div style={{ position:"absolute", top:30, left:"50%", transform:"translateX(-50%)", width:420, height:420, borderRadius:"50%", border:"1px solid rgba(163,230,53,0.07)", pointerEvents:"none" }}/>
-          <div style={{ position:"absolute", top:60, left:"50%", transform:"translateX(-50%)", width:280, height:280, borderRadius:"50%", border:"1px solid rgba(163,230,53,0.10)", pointerEvents:"none" }}/>
+          <div style={{ position:"absolute", top:30, left:"50%", transform:"translateX(-50%)", width:420, height:420, borderRadius:"50%", border:"1px solid rgba(163,230,53,0.06)", pointerEvents:"none" }}/>
+          <div style={{ position:"absolute", top:60, left:"50%", transform:"translateX(-50%)", width:280, height:280, borderRadius:"50%", border:"1px solid rgba(163,230,53,0.09)", pointerEvents:"none" }}/>
 
-          {/* label */}
           <div style={{
             display:"inline-flex", alignItems:"center", gap:8,
             background:G.accentDim, border:`1px solid ${G.accentBorder}`,
@@ -582,13 +499,10 @@ export default function ModelInsights({ isLoggedIn }) {
 
           <h1 style={{
             fontSize:"clamp(2.2rem,5vw,3.8rem)", fontWeight:800, lineHeight:1.1,
-            color:"#fff", margin:"0 0 20px",
-            fontFamily:"'Syne','Segoe UI',sans-serif",
+            color:"#fff", margin:"0 0 20px", fontFamily:"'Syne','Segoe UI',sans-serif",
           }}>
             Behind the{" "}
-            <span style={{ color:G.accent, textShadow:"0 0 40px rgba(163,230,53,0.35)" }}>
-              Predictions
-            </span>
+            <span style={{ color:G.accent }}>Predictions</span>
           </h1>
 
           <p style={{ maxWidth:640, margin:"0 auto 48px", fontSize:"1rem", lineHeight:1.75, color:G.textSub }}>
@@ -597,12 +511,10 @@ export default function ModelInsights({ isLoggedIn }) {
             expected features of the trained model to generate churn risk predictions and retention insights.
           </p>
 
-          {/* Floating accuracy card */}
           <div style={{
             display:"inline-flex", flexDirection:"column", alignItems:"center",
             background:G.accentDim, border:`1px solid ${G.accentBorder}`,
             borderRadius:16, padding:"20px 40px",
-            animation:"float 4s ease-in-out infinite",
           }}>
             <span style={{ fontSize:"3rem", fontWeight:800, color:G.accent, lineHeight:1, fontFamily:"'Syne',sans-serif" }}>
               {count}%
@@ -614,10 +526,9 @@ export default function ModelInsights({ isLoggedIn }) {
         </div>
 
         <div style={wrap}>
-
           {divider}
 
-          {/* ── MODEL OVERVIEW ── */}
+          {/* MODEL OVERVIEW */}
           <Section>
             <div style={{ marginBottom:32 }}>
               <div style={{ fontSize:"0.78rem", color:G.accent, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:10 }}>
@@ -628,17 +539,17 @@ export default function ModelInsights({ isLoggedIn }) {
           </Section>
 
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:16, marginBottom:8 }}>
-            <StatCard icon={Icons.robot(20)}    label="Primary Model" value="XGBoost"  sub="Classifier"               delay={0}   />
-            <StatCard icon={Icons.dataset(20)}  label="Dataset"       value="Telco"    sub="Customer Churn Dataset"    delay={80}  />
-            <StatCard icon={Icons.users(20)}    label="Records"       value="7,043"    sub="Customers"                 delay={160} />
-            <StatCard icon={Icons.trendDown(20)}label="Churn Rate"    value="26.5%"    sub="Distribution"              delay={240} />
-            <StatCard icon={Icons.target(20)}   label="Accuracy"      value="~79%"     sub="Test set"                  delay={320} />
-            <StatCard icon={Icons.activity(20)} label="ROC-AUC"       value="~0.845"   sub="Area under curve"          delay={400} />
+            <StatCard icon={Icons.robot(20)}     label="Primary Model"  value="XGBoost"  sub="Classifier + Optuna Tuned"   delay={0}   />
+            <StatCard icon={Icons.dataset(20)}   label="Dataset"        value="Telco"    sub="Customer Churn Dataset"       delay={60}  />
+            <StatCard icon={Icons.users(20)}     label="Records"        value="7,043"    sub="Customers"                    delay={120} />
+            <StatCard icon={Icons.trendDown(20)} label="Churn Rate"     value="26.5%"    sub="Distribution"                 delay={180} />
+            <StatCard icon={Icons.target(20)}    label="Accuracy"       value="77%"      sub="Test set"                     delay={240} />
+            <StatCard icon={Icons.activity(20)}  label="ROC-AUC"        value="0.858"    sub="Area under curve"             delay={300} />
           </div>
 
           {divider}
 
-          {/* ── PIPELINE ── */}
+          {/* PIPELINE */}
           <Section style={{ marginBottom:36 }}>
             <div style={{ fontSize:"0.78rem", color:G.accent, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:10 }}>
               How It Works
@@ -649,33 +560,33 @@ export default function ModelInsights({ isLoggedIn }) {
 
           <div style={{ display:"flex", flexDirection:"column" }}>
             {[
-              { icon: Icons.filter(18),  title:"Data Preprocessing",               body:"Customer records are cleaned, transformed, and encoded into a machine-learning compatible format before prediction." },
-              { icon: Icons.balance(18), title:"Class Imbalance Handling",          body:"The dataset contains significantly fewer churn customers than non-churn customers. SMOTE (Synthetic Minority Oversampling Technique) was applied to improve learning balance." },
-              { icon: Icons.cpu(18),     title:"Model Training",                    body:"The final prediction engine uses Extreme Gradient Boosting (XGBoost), where sequential decision trees learn from previous prediction errors to improve churn detection." },
-              { icon: Icons.zap(18),     title:"Risk Prediction",                   body:"The trained model generates churn probability scores, customer risk categorization, and prediction outputs." },
-              { icon: Icons.eye(18),     title:"Explainability & Recommendations",  body:"The platform integrates SHAP explainability and retention recommendation generation to improve transparency and business usability." },
+              { icon: Icons.filter(18),  title: "Data Preprocessing",              body: "Customer records are cleaned, transformed, and encoded into a machine-learning compatible format before prediction." },
+              { icon: Icons.balance(18), title: "Class Imbalance Handling",         body: "The dataset contains significantly fewer churn customers. SMOTE (Synthetic Minority Oversampling Technique) was applied during training to improve class balance and recall." },
+              { icon: Icons.cpu(18),     title: "Model Training + Optuna Tuning",   body: "XGBoost is trained with hyperparameters optimized via Optuna — 50 automated trials searched for the best combination, improving churn recall from 50% to 82%." },
+              { icon: Icons.zap(18),     title: "Risk Prediction",                  body: "The trained model generates churn probability scores, customer risk categorization (Low / Medium / High), and prediction outputs per customer." },
+              { icon: Icons.eye(18),     title: "Explainability & Recommendations", body: "SHAP (SHapley Additive Explanations) surfaces the top features driving each prediction. The platform then generates tailored retention recommendations per customer." },
             ].map((s, i) => (
-              <TimelineStep key={i} num={i+1} icon={s.icon} title={s.title} body={s.body} last={i===4} delay={i*100} />
+              <TimelineStep key={i} num={i+1} icon={s.icon} title={s.title} body={s.body} last={i===4} />
             ))}
           </div>
 
           {divider}
 
-          {/* ── EVALUATION METRICS ── */}
+          {/* EVALUATION METRICS */}
           <Section style={{ marginBottom:36 }}>
             <div style={{ fontSize:"0.78rem", color:G.accent, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:10 }}>
               Performance
             </div>
             <h2 style={sectionTitle}>Evaluation Metrics</h2>
-            <p style={sectionSub}>Measured on held-out test data after full training.</p>
+            <p style={sectionSub}>Measured on held-out test data after Optuna-tuned training.</p>
           </Section>
 
           <div style={{ ...glassCard, padding:"28px 32px", marginBottom:20 }}>
-            <MetricBar label="Accuracy"  value="~79%"   percent={79}   delay={0}   />
-            <MetricBar label="Recall"    value="~67%"   percent={67}   delay={100} />
-            <MetricBar label="Precision" value="~60%"   percent={60}   delay={200} />
-            <MetricBar label="F1-Score"  value="~0.63"  percent={63}   delay={300} />
-            <MetricBar label="ROC-AUC"   value="~0.845" percent={84.5} delay={400} />
+            <MetricBar label="Accuracy"        value="77%"    percent={77}   />
+            <MetricBar label="Churn Recall"    value="82%"    percent={82}   />
+            <MetricBar label="Churn Precision" value="55%"    percent={55}   />
+            <MetricBar label="Churn F1-Score"  value="0.66"   percent={66}   />
+            <MetricBar label="ROC-AUC"         value="0.858"  percent={85.8} />
           </div>
 
           <Section>
@@ -685,36 +596,36 @@ export default function ModelInsights({ isLoggedIn }) {
               borderRadius:"0 14px 14px 0",
               fontSize:"0.88rem", color:G.textSub, lineHeight:1.75,
             }}>
-              The project prioritizes <strong style={{ color:G.textPrimary }}>balanced predictive performance</strong> rather
-              than maximizing a single metric. Special focus was placed on churn recall and ROC-AUC to improve
-              identification of at-risk customers while maintaining stable prediction quality.
+              The model is optimized for <strong style={{ color:G.textPrimary }}>churn recall</strong> — catching
+              real churners matters more than avoiding false alarms. A missed churner is a lost customer;
+              a false alarm costs only a small retention offer. ROC-AUC of <strong style={{ color:G.textPrimary }}>0.858</strong> confirms
+              strong discrimination between churners and non-churners.
             </div>
           </Section>
 
           {divider}
 
-          {/* ── EXPERIMENTS ── */}
+          {/* EXPERIMENTS */}
           <Section style={{ marginBottom:36 }}>
             <div style={{ fontSize:"0.78rem", color:G.accent, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:10 }}>
               Research
             </div>
             <h2 style={sectionTitle}>Experimental Optimization</h2>
             <p style={sectionSub}>
-              Multiple approaches were tested before settling on the production pipeline.
-              Expand each to see findings.
+              Multiple approaches were tested before settling on the production pipeline. Expand each to see findings.
             </p>
           </Section>
 
           <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
             {[
-              { tag:"Baseline",   title:"Random Forest",              body:"Served as the baseline comparison model. Produced lower churn recall than XGBoost, making it less suitable for identifying at-risk customers." },
-              { tag:"Production", title:"XGBoost + SMOTE",            body:"Best overall balance between accuracy, recall, precision, and ROC-AUC. Selected as the production model after comparative evaluation." },
-              { tag:"Experiment", title:"Threshold Tuning",           body:"Adjusting the decision threshold improved churn recall significantly, but came at the cost of reduced overall accuracy and more false positives." },
-              { tag:"Experiment", title:"Feature Engineering",        body:"Additional derived features were tested. Some improved performance marginally; others introduced noise. The final model uses a cleaned subset." },
-              { tag:"Experiment", title:"Regularization Experiments", body:"Various L1/L2 regularization strengths were tuned. Helped prevent overfitting but didn't significantly improve test set recall." },
-              { tag:"Experiment", title:"Balanced XGBoost V3",        body:"scale_pos_weight and other class-balancing strategies were tested. Produced stable precision but lower recall than the SMOTE-based pipeline." },
+              { tag:"Baseline",   title:"Random Forest",              body:"Served as the baseline. Produced lower churn recall than XGBoost, making it less suitable for identifying at-risk customers." },
+              { tag:"Experiment", title:"XGBoost + SMOTE",            body:"SMOTE balanced the training data by generating synthetic churner samples. Showed improved recall over the baseline but recall remained around 50% before further tuning." },
+              { tag:"Experiment", title:"Threshold Tuning",           body:"Adjusting the decision threshold improved churn recall but at the cost of reduced overall accuracy and more false positives." },
+              { tag:"Experiment", title:"Balanced XGBoost V3",        body:"scale_pos_weight and regularization strategies were tested. Achieved 80% accuracy but churn recall was only 50% — too many churners were missed." },
+              { tag:"Experiment", title:"Feature Engineering",        body:"Derived features (HighRisk flag, ChargePerMonth ratio) were tested. Some improved performance marginally; the final model uses a cleaned subset." },
+              { tag:"Production", title:"XGBoost + Optuna Tuning",    body:"50 automated Optuna trials searched for the best hyperparameter combination. Churn recall improved from 50% to 82% and ROC-AUC from 0.833 to 0.858. Selected as the final production model." },
             ].map((e, i) => (
-              <ExpCard key={i} tag={e.tag} title={e.title} body={e.body} delay={i*60} />
+              <ExpCard key={i} tag={e.tag} title={e.title} body={e.body} />
             ))}
           </div>
 
@@ -722,35 +633,34 @@ export default function ModelInsights({ isLoggedIn }) {
           <Section>
             <div style={{ ...glassCard, overflow:"hidden" }}>
               <div style={{
-                display:"grid", gridTemplateColumns:"1fr 1fr",
+                display:"grid", gridTemplateColumns:"1fr 1fr 1fr",
                 background:"rgba(255,255,255,0.02)",
                 borderBottom:`1px solid ${G.cardBorder}`,
                 padding:"12px 20px",
               }}>
-                {["Version","Observation"].map((h) => (
+                {["Version","Churn Recall","Observation"].map((h) => (
                   <span key={h} style={{ fontSize:"0.72rem", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:G.textMuted }}>{h}</span>
                 ))}
               </div>
               {[
-                ["Random Forest",   "Lower churn recall"],
-                ["XGBoost + SMOTE", "Best overall balance"],
-                ["Threshold Tuning","Higher recall but reduced accuracy"],
-                ["Balanced V3",     "Stable precision but lower recall"],
-              ].map(([v, o], i) => (
+                ["Random Forest",          "~55%", "Baseline — lowest recall"],
+                ["XGBoost + SMOTE",        "~62%", "Better balance, lower recall"],
+                ["Balanced XGBoost V3",    "50%",  "80% accuracy but missed churners"],
+                ["XGBoost + Optuna",       "82%",  "Production model — best recall"],
+              ].map(([v, r, o], i) => (
                 <div key={i} style={{
-                  display:"grid", gridTemplateColumns:"1fr 1fr",
+                  display:"grid", gridTemplateColumns:"1fr 1fr 1fr",
                   padding:"13px 20px",
                   borderBottom: i < 3 ? `1px solid ${G.cardBorder}` : "none",
                 }}
                   onMouseEnter={(e) => e.currentTarget.style.background="rgba(255,255,255,0.015)"}
                   onMouseLeave={(e) => e.currentTarget.style.background="transparent"}
                 >
-                  <span style={{ fontSize:"0.88rem", color: v==="XGBoost + SMOTE" ? G.accent : G.textPrimary, fontWeight: v==="XGBoost + SMOTE" ? 700 : 400 }}>
-                    {v==="XGBoost + SMOTE" && (
-                      <span style={{ marginRight:6, verticalAlign:"middle" }}>{Icons.check}</span>
-                    )}
+                  <span style={{ fontSize:"0.88rem", color: v==="XGBoost + Optuna" ? G.accent : G.textPrimary, fontWeight: v==="XGBoost + Optuna" ? 700 : 400, display:"flex", alignItems:"center", gap:6 }}>
+                    {v==="XGBoost + Optuna" && <span style={{ verticalAlign:"middle" }}>{Icons.check}</span>}
                     {v}
                   </span>
+                  <span style={{ fontSize:"0.88rem", color: v==="XGBoost + Optuna" ? G.accent : G.textSub, fontWeight: v==="XGBoost + Optuna" ? 700 : 400 }}>{r}</span>
                   <span style={{ fontSize:"0.87rem", color:G.textSub }}>{o}</span>
                 </div>
               ))}
@@ -759,7 +669,7 @@ export default function ModelInsights({ isLoggedIn }) {
 
           {divider}
 
-          {/* ── FEATURE IMPORTANCE ── */}
+          {/* FEATURE IMPORTANCE */}
           <Section style={{ marginBottom:36 }}>
             <div style={{ fontSize:"0.78rem", color:G.accent, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:10 }}>
               Feature Analysis
@@ -778,7 +688,7 @@ export default function ModelInsights({ isLoggedIn }) {
 
           {divider}
 
-          {/* ── SHAP ── */}
+          {/* SHAP */}
           <Section style={{ marginBottom:36 }}>
             <div style={{ fontSize:"0.78rem", color:G.accent, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:10 }}>
               Explainability
@@ -786,7 +696,7 @@ export default function ModelInsights({ isLoggedIn }) {
             <h2 style={sectionTitle}>SHAP Explainability</h2>
             <p style={sectionSub}>
               The platform integrates SHAP (SHapley Additive Explanations) to explain why individual customers
-              are predicted as high or low churn risk — improving transparency by surfacing the features
+              are predicted as high or low churn risk — improving transparency by surfacing the top features
               contributing most to each prediction.
             </p>
           </Section>
@@ -795,26 +705,19 @@ export default function ModelInsights({ isLoggedIn }) {
             <div style={{ fontSize:"0.78rem", fontWeight:700, color:G.textMuted, letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:20 }}>
               Sample — High Risk Customer Feature Impact
             </div>
-
-            <ShapBar feature="Month-to-Month"    impact={82} positive={true}  delay={0}   />
-            <ShapBar feature="Fiber Optic"       impact={68} positive={true}  delay={80}  />
-            <ShapBar feature="No Tech Support"   impact={55} positive={true}  delay={160} />
-            <ShapBar feature="High Charges"      impact={48} positive={true}  delay={240} />
-            <ShapBar feature="Long Tenure"       impact={60} positive={false} delay={320} />
-            <ShapBar feature="Two-Year Contract" impact={45} positive={false} delay={400} />
-
-            {/* Legend with SVG swatches */}
+            <ShapBar feature="Month-to-Month"    impact={82} positive={true}  />
+            <ShapBar feature="Fiber Optic"       impact={68} positive={true}  />
+            <ShapBar feature="No Tech Support"   impact={55} positive={true}  />
+            <ShapBar feature="High Charges"      impact={48} positive={true}  />
+            <ShapBar feature="Long Tenure"       impact={60} positive={false} />
+            <ShapBar feature="Two-Year Contract" impact={45} positive={false} />
             <div style={{ marginTop:18, display:"flex", gap:24, flexWrap:"wrap" }}>
               <span style={{ display:"flex", alignItems:"center", gap:8, fontSize:"0.78rem", color:G.textMuted }}>
-                <svg width="24" height="10" viewBox="0 0 24 10">
-                  <rect width="24" height="10" rx="4" fill="rgba(239,68,68,0.6)" />
-                </svg>
+                <svg width="24" height="10" viewBox="0 0 24 10"><rect width="24" height="10" rx="4" fill="rgba(239,68,68,0.6)" /></svg>
                 Increases churn risk
               </span>
               <span style={{ display:"flex", alignItems:"center", gap:8, fontSize:"0.78rem", color:G.textMuted }}>
-                <svg width="24" height="10" viewBox="0 0 24 10">
-                  <rect width="24" height="10" rx="4" fill="rgba(163,230,53,0.6)" />
-                </svg>
+                <svg width="24" height="10" viewBox="0 0 24 10"><rect width="24" height="10" rx="4" fill="rgba(163,230,53,0.6)" /></svg>
                 Decreases churn risk
               </span>
             </div>
@@ -822,7 +725,7 @@ export default function ModelInsights({ isLoggedIn }) {
 
           {divider}
 
-          {/* ── PHILOSOPHY ── */}
+          {/* PHILOSOPHY */}
           <Section>
             <div style={{ textAlign:"center", maxWidth:680, margin:"0 auto 80px" }}>
               <div style={{ fontSize:"0.78rem", color:G.accent, fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:14 }}>
@@ -837,22 +740,21 @@ export default function ModelInsights({ isLoggedIn }) {
                 <strong style={{ color:G.textPrimary }}>explainability</strong>,{" "}
                 <strong style={{ color:G.textPrimary }}>business usability</strong>, and{" "}
                 <strong style={{ color:G.textPrimary }}>deployment practicality</strong>. Rather than
-                optimizing for raw accuracy alone, the system emphasizes interpretable and operationally
-                useful churn prediction.
+                optimizing for raw accuracy alone, the system emphasizes recall-focused, interpretable
+                churn prediction.
               </p>
-
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))", gap:16 }}>
                 {[
-                  { icon: Icons.bullseye(28), label:"Balanced Performance", desc:"Optimized across accuracy, recall, and ROC-AUC" },
-                  { icon: Icons.search(28),   label:"Explainability",        desc:"SHAP-powered per-customer prediction transparency" },
-                  { icon: Icons.settings(28), label:"Operational Fit",       desc:"Designed for real business deployment and usability" },
+                  { icon: Icons.bullseye(28), label:"Recall-Focused",   desc:"Optimized to catch real churners, not just maximize accuracy" },
+                  { icon: Icons.search(28),   label:"Explainability",   desc:"SHAP-powered per-customer prediction transparency" },
+                  { icon: Icons.settings(28), label:"Operational Fit",  desc:"Designed for real business deployment and usability" },
                 ].map((p) => (
                   <div key={p.label} style={{
                     ...glassCard, padding:"24px 16px", textAlign:"center",
-                    transition:"transform 0.2s, box-shadow 0.2s",
+                    transition:"transform 0.2s",
                   }}
-                    onMouseEnter={(e) => { e.currentTarget.style.transform="translateY(-4px)"; e.currentTarget.style.boxShadow="0 8px 32px rgba(163,230,53,0.08)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.transform="translateY(0)";    e.currentTarget.style.boxShadow="none"; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform="translateY(-3px)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform="translateY(0)"; }}
                   >
                     <div style={{ display:"flex", justifyContent:"center", marginBottom:12 }}>{p.icon}</div>
                     <div style={{ fontSize:"0.85rem", fontWeight:700, color:G.textPrimary, marginBottom:6 }}>{p.label}</div>
