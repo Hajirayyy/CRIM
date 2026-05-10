@@ -769,4 +769,4 @@ export default function ModelInsights({ isLoggedIn }) {
       </div>
     </div>
   );
-}
+} 
