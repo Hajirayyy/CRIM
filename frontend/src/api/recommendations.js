@@ -1,12 +1,11 @@
-const BASE_URL = "http://127.0.0.1:8000";
-
+import { BASE_URL } from "./api";
 export const getRecommendations = async (uploadId, customerId) => {
     const token = localStorage.getItem("token");
 
-    fetch(`http://127.0.0.1:8000/recommendations/${uploadId}/${customerId}`, {
-    headers: {
-        Authorization: `Bearer ${token}`
-    }
+    const res = await fetch(`${BASE_URL}/recommendations/${uploadId}/${customerId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
     });
 
   return res.json();

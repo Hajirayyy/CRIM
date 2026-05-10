@@ -1,7 +1,5 @@
 import { useState } from "react";
-
-const BASE_URL = "http://127.0.0.1:8000/api";
-
+import { BASE_URL } from "../api/api";
 const CsvIcon = () => (
   <svg width="38" height="38" viewBox="0 0 24 24" fill="none"
     stroke="rgba(163,230,53,0.65)" strokeWidth="1.6"

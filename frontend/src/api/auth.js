@@ -1,5 +1,4 @@
-const BASE_URL = "http://127.0.0.1:8000";
-
+import { BASE_URL } from "./api";
 export const signup = async (email, password) => {
   const res = await fetch(`${BASE_URL}/signup`, {
     method: "POST",
