@@ -16,7 +16,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VerifyEmail from "./pages/VerifyEmail";
 import ResetPassword from "./pages/ResetPassword";
-import ModelInsights from "./pages/ModelInsights";
+import Modelinsights from "./pages/Modelinsights";
 import "./index.css";
 
 const App = () => {
@@ -143,7 +143,7 @@ const App = () => {
           />
 
           <Route path="/model-insights" 
-          element={<ModelInsights isLoggedIn={isLoggedIn} />}
+          element={<Modelinsights isLoggedIn={isLoggedIn} />}
           />
 
         </Routes>
