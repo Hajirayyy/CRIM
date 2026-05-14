@@ -11,10 +11,11 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://crim-three.vercel.app",
-    ],
+   allow_origins=[
+    "http://localhost:5173",
+    "https://crim-three.vercel.app",
+    "heroic-generosity-production-76b8.up.railway.app", 
+],
     allow_origin_regex=r"https://crim-.*\.vercel\.app",
     allow_credentials=False,
     allow_methods=["*"],
