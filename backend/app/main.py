@@ -13,7 +13,6 @@ app.add_middleware(
     CORSMiddleware,
    allow_origins=[
     "http://localhost:5173",
-    "https://crim-three.vercel.app",
     "heroic-generosity-production-71c7.up.railway.app", 
     
 ],
