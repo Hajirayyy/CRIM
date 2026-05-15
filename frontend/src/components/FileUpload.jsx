@@ -63,7 +63,7 @@ const FileUpload = ({ onUploadSuccess }) => {
       fd.append("file", file);
 
       try {
-        const res = await fetch(`${BASE_URL}/upload/preview`, {
+        const res = await fetch(`${BASE_URL}/api/upload/preview`, {
           method: "POST",
           body: fd,
         });
