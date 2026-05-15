@@ -749,7 +749,7 @@ const Upload = ({ onData, uploadState, onUploadStateChange }) => {
     fd.append("file", uploadedFile);
     fd.append("mapping", JSON.stringify(mapping));
     try {
-      const res = await fetch(`${BASE_URL}/upload/confirm`, {
+      const res = await fetch(`${BASE_URL}/api/upload/confirm`, {
         method: "POST",
         body: fd,
       });
